@@ -1,0 +1,30 @@
+{
+    "name": "pixellweb/vosfactures",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "B1nj",
+            "email": "postmaster@b1nj.fr"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "spatie/laravel-data": "^3.12.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "PixellWeb\\Vosfactures\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+              "PixellWeb\\Vosfactures\\VosfacturesServiceProvider",
+              "PixellWeb\\Vosfactures\\EventServiceProvider"
+            ]
+        }
+    },
+    "require-dev": {
+
+    }
+}
