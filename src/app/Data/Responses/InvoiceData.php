@@ -52,7 +52,7 @@ class InvoiceData extends Data
         // Actuelement seulement la modification prise en compte
         return [
             'numero' => $is_brouillon ? null : $this->number,
-            'etat' => $is_brouillon ? FactureEtat::BROUILLON : FactureEtat::VALIDEE,
+            'etat' => $is_brouillon ? FactureEtat::BROUILLON : ($this->status === Status::PAID ? FactureEtat::PAYEE : FactureEtat::ENCOURS),
             'provider' => 'vosfactures',
             'provider_reference' => $this->id,
             'emission_at' => $this->issue_date
