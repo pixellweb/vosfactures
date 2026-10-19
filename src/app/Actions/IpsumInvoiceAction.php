@@ -17,7 +17,7 @@ class IpsumInvoiceAction
     ) {}
 
 
-    public function syncToProvider(Facture $facture, bool $brouillon): ?InvoiceData
+    public function syncToProvider(Facture $facture, bool $brouillon): InvoiceData
     {
         if ($facture->provider_reference) {
 
@@ -26,20 +26,21 @@ class IpsumInvoiceAction
             }
 
             if (!$facture->numero) {
-                $invoice = $this->invoice->update(SaveInvoiceData::fromIpsum($facture, $brouillon, $this->invoice), $facture->provider_reference);
+                $this->invoice->update(SaveInvoiceData::fromIpsum($facture, $brouillon, $this->invoice), $facture->provider_reference);
             }
 
         } else {
-            $invoice = $this->invoice->create(SaveInvoiceData::fromIpsum($facture, $brouillon));
-
-            $facture->update($invoice->toIpsum());
+            $this->invoice->create(SaveInvoiceData::fromIpsum($facture, $brouillon));
         }
 
         if ($facture->numero and $facture->is_payee) {
             $this->invoice->markAsPaid($facture->provider_reference);
         }
 
-        return $invoice ?? null;
+        $invoice = $this->invoice->get($facture->provider_reference);
+        $facture->update($invoice->toIpsum());
+
+        return $invoice;
     }
 
     public function emmission(Facture $facture): void
@@ -48,14 +49,16 @@ class IpsumInvoiceAction
          * Pas de brouillon chez vosfactures. On passe par une création d'une facture en mode test qu'il faut supprimer au moment de l'émission
          */
         $facture_a_supprimer = $facture->provider_reference;
-        $invoiceData = $this->invoice->create(SaveInvoiceData::fromIpsum($facture, false));
-        $facture->update($invoiceData->toIpsum());
+        $new_invoice_data = $this->invoice->create(SaveInvoiceData::fromIpsum($facture, false));
 
         $this->invoice->delete($facture_a_supprimer);
 
         if ($facture->numero and $facture->is_payee) {
-            $this->invoice->markAsPaid($facture->provider_reference);
+            $this->invoice->markAsPaid($new_invoice_data->id);
         }
+
+        $invoice = $this->invoice->get($new_invoice_data->id);
+        $facture->update($invoice->toIpsum());
     }
 
     public function delete(Facture $facture): void
