@@ -10,8 +10,8 @@ class SaveClientData extends Data
 {
     public function __construct(
         public string $name,
-        public string $first_name,
-        public string $last_name,
+        public ?string $first_name,
+        public ?string $last_name,
         public bool $company,
         public string $phone,
         public string $post_code,
