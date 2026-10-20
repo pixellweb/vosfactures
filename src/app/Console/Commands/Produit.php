@@ -68,7 +68,7 @@ class Produit extends Command
 
 
         if ($this->option('export')) {
-            Prestation::all()->each(function (Prestation $prestation) use ($ipsumProductAction) {
+            Prestation::whereNull('reference_externe')->get()->each(function (Prestation $prestation) use ($ipsumProductAction) {
 
                 try {
 

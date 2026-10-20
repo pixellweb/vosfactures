@@ -14,7 +14,7 @@
 
 4) Ajouter la commande dans le Kernel.
 
-        $schedule->command('vosfactures:send-invoice')->daily();
+        $schedule->command('pennylane:send-invoice')->everyTenMinutes();
 5) Paramétrer l'envoi d'email dans les paramétres de vosfactures.fr/
 
 ## Doc api 

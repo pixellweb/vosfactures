@@ -18,10 +18,10 @@ class FactureVosfacturesProvider implements FactureContract
         private IpsumClientAction $clientAction,
     ) {}
 
-    public function syncToProvider(Facture $facture, bool $brouillon = true): void
+    public function syncToProvider(Facture $facture): void
     {
         $this->clientAction->syncToProvider($facture);
-        $this->invoiceAction->syncToProvider($facture, $brouillon);
+        $this->invoiceAction->syncToProvider($facture);
     }
 
     public function emmission(Facture $facture): void

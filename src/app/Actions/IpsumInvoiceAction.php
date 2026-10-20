@@ -17,7 +17,7 @@ class IpsumInvoiceAction
     ) {}
 
 
-    public function syncToProvider(Facture $facture, bool $brouillon): InvoiceData
+    public function syncToProvider(Facture $facture): InvoiceData
     {
         if ($facture->provider_reference) {
 
@@ -26,18 +26,18 @@ class IpsumInvoiceAction
             }
 
             if (!$facture->numero) {
-                $this->invoice->update(SaveInvoiceData::fromIpsum($facture, $brouillon, $this->invoice), $facture->provider_reference);
+                $this->invoice->update(SaveInvoiceData::fromIpsum($facture, true, $this->invoice), $facture->provider_reference);
             }
 
         } else {
-            $this->invoice->create(SaveInvoiceData::fromIpsum($facture, $brouillon));
+            $invoice = $this->invoice->create(SaveInvoiceData::fromIpsum($facture, true));
         }
 
-        if ($facture->numero and $facture->is_payee) {
-            $this->invoice->markAsPaid($facture->provider_reference);
+        if ($facture->is_payee) {
+            $this->invoice->markAsPaid($facture->provider_reference ?? $invoice->id);
         }
 
-        $invoice = $this->invoice->get($facture->provider_reference);
+        $invoice = $this->invoice->get($facture->provider_reference ?? $invoice->id);
         $facture->update($invoice->toIpsum());
 
         return $invoice;
@@ -53,7 +53,7 @@ class IpsumInvoiceAction
 
         $this->invoice->delete($facture_a_supprimer);
 
-        if ($facture->numero and $facture->is_payee) {
+        if ($facture->is_payee) {
             $this->invoice->markAsPaid($new_invoice_data->id);
         }
 
