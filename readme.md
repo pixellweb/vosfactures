@@ -5,17 +5,16 @@
 1) Paramètres > API ; Générer le token
 2) Renseigner dans le fichier .env
 
-        FACTURE_PROVIDER=vosfactures
-        VOSFACTURES_TOKEN=xxxxxxxx
+   FACTURE_PROVIDER=vosfactures
+   VOSFACTURES_TOKEN=xxxxxxxx
+   VOSFACTURES_URL=https://xxxxx.vosfactures.fr
+   VOSFACTURES_DEPARTMENT_ID=xxxx
 
 3) Lancer la commande pour envoyer les produits dans Vosfactures
 
         php artisan vosfactures:produit --export 
 
-4) Ajouter la commande dans le Kernel.
-
-        $schedule->command('pennylane:send-invoice')->everyTenMinutes();
-5) Paramétrer l'envoi d'email dans les paramétres de vosfactures.fr/
+4) Paramétrer l'envoi d'email dans les paramétres de vosfactures.fr/
 
 ## Doc api 
 
