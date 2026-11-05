@@ -54,8 +54,7 @@ class InvoiceData extends Data
             'numero' => $is_brouillon ? null : $this->number,
             'etat' => $is_brouillon ? FactureEtat::BROUILLON : ($this->status === Status::PAID ? FactureEtat::PAYEE : FactureEtat::ENCOURS),
             'provider' => 'vosfactures',
-            'provider_reference' => $this->id,
-            'emission_at' => $this->issue_date
+            'provider_reference' => $this->id
         ];
         
     }

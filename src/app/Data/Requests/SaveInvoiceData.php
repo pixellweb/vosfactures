@@ -79,7 +79,7 @@ class SaveInvoiceData extends Data
         return self::validateAndCreate([
             'kind' => 'vat',
             'department_id' => config('vosfactures.department_id'),
-            'issue_date' => now(),
+            'issue_date' => $facture->emission_at,
             'payment_to' => $facture->echeance_at,
             'client_id' => $facture->client->reference_externe,
             'show_discount' => $has_remise ? 1 : 0,
