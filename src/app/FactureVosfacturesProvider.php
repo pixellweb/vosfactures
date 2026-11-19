@@ -48,4 +48,9 @@ class FactureVosfacturesProvider implements FactureContract
     {
         return view('Vosfactures::iframe');
     }
+
+    public function clientRules(): array
+    {
+        return [];
+    }
 }
